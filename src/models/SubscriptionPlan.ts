@@ -1,11 +1,20 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
 const subscriptionPlanSchema = new Schema({
+  ownerType: {
+    type: String,
+    enum: ["user", "company"], // "user" for individual, "company" for orgs
+    required: true,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
-    unique: true,
+    default: null,
+  },
+  companyId: {
+    type: Schema.Types.ObjectId,
+    ref: "Company",
+    default: null,
   },
   type: {
     type: String,

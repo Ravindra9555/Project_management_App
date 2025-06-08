@@ -1,6 +1,6 @@
 import { dbConnect } from "@/app/config/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/app/models/User";
+import User from "../../../models/User";
 import { getTokenData } from "@/helpers/getTokenData";
 
 export async function GET(request: NextRequest) {
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("[PROFILE_GET_REQUEST]", tokenData);
+    // console.log("[PROFILE_GET_REQUEST]", tokenData);
 
     const user = await User.findById(tokenData.id)
       .populate(

@@ -1,44 +1,51 @@
-// app/api/register/route.ts
-import { NextResponse } from 'next/server';
-import { dbConnect } from '@/app/config/dbConfig';
-import User from '@/app/models/User';
-import bcrypt from 'bcryptjs';
 
+
+import { NextResponse } from "next/server";
+import { dbConnect } from "@/app/config/dbConfig";
+import User from "@/models/User";
+import bcrypt from "bcryptjs";
+
+// Export an asynchronous function named POST that takes a Request object as a parameter
 export async function POST(req: Request) {
   try {
+    // Connect to the database
     await dbConnect();
-    const { name, email, password, role } = await req.json();
+    // Destructure the name, email, and password from the request body
+    const { name, email, password } = await req.json();
 
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ message: 'All fields required.' }, { status: 400 });
+    // Check if email and password are provided
+    if (!email || !password) {
+      // Return a JSON response with a 400 status code and a message if email or password is not provided
+      return NextResponse.json({ message: "Email and password required" }, { status: 400 });
     }
 
+    // Check if the email already exists in the database
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return NextResponse.json({ message: 'User already exists.' }, { status: 409 });
+      // Return a JSON response with a 409 status code and a message if the email already exists
+      return NextResponse.json({ message: "Email already exists" }, { status: 409 });
     }
 
+    // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
+
+    // Create a new user in the database
     const user = await User.create({
-      name,
+      name: name || "User",  // fallback if name not provided
       email,
       password: hashedPassword,
-      role: role || "engineer",
+      accountType: "individual",
     });
+    
+    
 
-    return NextResponse.json({
-      message: 'User registered successfully.',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    }, { status: 201 });
+    // Return a JSON response with a 201 status code and a message if the user is created successfully
+    return NextResponse.json({ message: "User created", userId: user._id }, { status: 201 });
   } catch (error) {
-    console.error('[REGISTER_ERROR]', error);
-    return NextResponse.json({ message: 'Something went wrong.' }, { status: 500 });
+    // Log the error to the console
+    console.error("Signup error:", error);
+    // Return a JSON response with a 500 status code and a message if there is an error
+    return NextResponse.json({ message: "Signup failed" }, { status: 500 });
   }
 }

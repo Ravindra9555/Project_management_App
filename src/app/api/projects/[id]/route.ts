@@ -2,8 +2,8 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/app/config/dbConfig";
 import { getTokenData } from "@/helpers/getTokenData";
-import Project from "@/app/models/Project";
-import User from "@/app/models/User";
+import Project from "../../../../models/Project";
+import User from "../../../../models/User";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
@@ -80,10 +80,10 @@ export async function PUT(req:Request, {params} : {params: {id: string }}) {
         if (!isAdmin && !isOwner) {
             return NextResponse.json({ message: "Forbidden" }, { status: 403 });
         }
-        const { name, description, assignedUsers, deadline } = await req.json();
+        const { name, description, assignedUsers, deadline, status } = await req.json();
         const updatedProject = await Project.findByIdAndUpdate(
             params.id,
-            { name, description, assignedUsers, deadline },
+            { name, description, assignedUsers, deadline ,status},
             { new: true }
         ).populate("assignedUsers", "name email role")
          .populate("createdBy", "name email");
