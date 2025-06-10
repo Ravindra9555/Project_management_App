@@ -57,7 +57,7 @@ const SignupPage = () => {
           router.push("/auth/login");
         }, 2000);
       }
-    } catch (err: any) {
+    } catch (err: object |any) {
       console.error(err);
       toast.error(err?.response?.data?.message || "Error creating account");
     } finally {

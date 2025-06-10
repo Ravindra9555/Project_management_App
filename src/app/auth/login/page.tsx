@@ -80,8 +80,8 @@ const LoginPage = () => {
           router.push("/dashboard");
         }
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch (err:object | any) {
+      // console.error(err);
       toast.error(err?.response?.data?.message || "Login failed 👎");
     } finally {
       setIsLoading(false);

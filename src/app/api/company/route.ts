@@ -15,6 +15,6 @@ export async function GET(request: NextRequest) {
     .populate("subscriptionPlan");
     return NextResponse.json(companies);
   } catch (error) {
-    return NextResponse.json({ error: "Error fetching companies", "message" :"Internal Server Error" });
+    return NextResponse.json({ error: error, "message" :"Internal Server Error" });
   }
 }
