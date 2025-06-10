@@ -1,10 +1,10 @@
 // components/ui/button.tsx
 "use client";
+
 import * as React from "react";
-import { cn } from "@/app/lib/utils";
+import { motion } from "framer-motion";
 import { HTMLMotionProps } from "framer-motion";
-import { motion } from 'framer-motion'; // ✅
-export { motion }; // ✅
+import { cn } from "@/app/lib/utils";
 
 interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: "default" | "outline" | "ghost" | "link";
