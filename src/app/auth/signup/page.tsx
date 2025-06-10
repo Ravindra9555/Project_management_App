@@ -9,6 +9,7 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Label } from "@/app/components/ui/label";
 import { motion } from "framer-motion";
+import Navbar from "@/app/landingPage/Navbar/page";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -65,6 +66,8 @@ const SignupPage = () => {
   };
 
   return (
+    <div>
+      <Navbar/>
     <div className="relative min-h-screen w-full bg-neutral-950 flex items-center justify-center p-4">
       <BackgroundBeams className="absolute top-0 left-0 w-full h-full z-0" />
       
@@ -190,6 +193,7 @@ const SignupPage = () => {
           }
         }}
       />
+    </div>
     </div>
   );
 };
