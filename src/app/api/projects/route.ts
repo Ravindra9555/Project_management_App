@@ -19,24 +19,28 @@ export async function GET(req: Request) {
     // If the user is not found, return a 404 Not Found response
     if (!user) return NextResponse.json({ message: "User not found" }, { status: 404 });
 
-    // Set the filter for the projects based on the user's role
-    const filter = user.role === "admin"
-      ? { } // admin sees all projects
-      : {
-          $or: [
-            { createdBy: user._id },
-            { assignedUsers: user._id }
-          ]
-        };
+       let filter = {};
 
-    // Find the projects in the database using the filter and populate the assignedUsers and createdBy fields
+    if (user.accountType === "organization" && user.role === "admin") {
+      // Admin of an organization sees all company projects
+      filter = { companyId: user.companyId };
+    } else {
+      // Individual, or engineer/worker/client
+      filter = {
+        $or: [
+          { createdBy: user._id },
+          { assignedUsers: user._id },
+        ]
+      };
+    }
+
     const projects = await Project
       .find(filter)
       .populate("assignedUsers", "name email role")
       .populate("createdBy", "name email");
 
-    // Return a 200 OK response with the projects
     return NextResponse.json({ projects }, { status: 200 });
+ 
 
   } catch (err) {
     // Log the error to the console
