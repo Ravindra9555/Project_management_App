@@ -314,16 +314,11 @@ import User from "../../../../models/User";
 import { NextRequest, NextResponse } from 'next/server';
 import { Types } from 'mongoose';
 
-// Define the context type for the second argument
-interface RouteContext {
-  params: {
-    id: string;
-  };
-}
+// We removed the RouteContext interface
 
-// Corrected GET handler
-export async function GET(request: NextRequest, context: RouteContext) {
-  const { params } = context; // Destructure here
+// Corrected GET handler with inline type
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
+  const { params } = context; // Destructure as before
   try {
     await dbConnect();
     const tokenData = await getTokenData(request);
@@ -355,9 +350,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
 }
 
 
-// Corrected DELETE handler
-export async function DELETE(request: NextRequest, context: RouteContext) {
-  const { params } = context; // Destructure here
+// Corrected DELETE handler with inline type
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
+  const { params } = context; // Destructure as before
   try {
     await dbConnect();
     const tokenData = await getTokenData(request);
@@ -393,9 +388,9 @@ interface ProjectUpdateData {
   status?: string;
 }
 
-// Corrected PUT handler
-export async function PUT(request: NextRequest, context: RouteContext) {
-  const { params } = context; // Destructure here
+// Corrected PUT handler with inline type
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+  const { params } = context; // Destructure as before
   try {
     await dbConnect();
     const tokenData = await getTokenData(request);
