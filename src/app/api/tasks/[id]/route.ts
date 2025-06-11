@@ -10,11 +10,10 @@ interface progressLogs {
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await dbConnect();
-  const { id } = params;
-
+  const { id } = await params;
   try {
     const updateData = await request.json();
 
@@ -60,10 +59,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise< { id: string }> }
 ) {
   await dbConnect();
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const deletedTask = await Task.findByIdAndDelete(id);
