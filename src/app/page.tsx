@@ -1,4 +1,4 @@
-import SignupPage from "./auth/signup/page";
+// import SignupPage from "./auth/signup/page";
 import LandingPage from "./landingPage/page";
 export default function Home() {
   return (

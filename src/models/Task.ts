@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import  { Schema, model, models } from "mongoose";
 
 const progressLogSchema = new Schema({
   message: String,

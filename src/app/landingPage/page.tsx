@@ -4,7 +4,7 @@ import { CardBody, CardContainer, CardItem } from "@/app/components/ui/3d-card";
 import { Button } from "@/app/components/ui/button";
 import { motion } from "framer-motion";
 import { TypewriterEffect } from "@/app/components/ui/typewriter-effect";
-import { WavyBackground } from "@/app/components/ui/wavy-background";
+// import { WavyBackground } from "@/app/components/ui/wavy-background";
 import { InfiniteMovingCards } from "../components/ui/infinite-moving-cards";
 import { LampContainer } from "../components/ui/lamp";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";
@@ -86,56 +86,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-neutral-950">
       {/* Navigation */}
-      {/* <nav className="fixed w-full z-50 bg-neutral-950/80 backdrop-blur-md border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">
-                  ProjectFlow
-                </span>
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  href="#features"
-                  className="text-neutral-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Features
-                </Link>
-                <Link
-                  href="#pricing"
-                  className="text-neutral-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="#testimonials"
-                  className="text-neutral-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Testimonials
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/auth/login">
-                <Button
-                  variant="outline"
-                  className="border-neutral-700 text-neutral-300 hover:text-white"
-                >
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/auth/signup">
-                <Button className="bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900">
-                  Get Started
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav> */}
+
       <Navbar />
 
       {/* Hero Section */}
@@ -189,8 +140,8 @@ export default function LandingPage() {
               Powerful Features
             </h2>
             <p className="max-w-2xl mx-auto text-neutral-400">
-              Designed to help you work smarter, not harder. Whether you're a
-              solo creator or a large team, we've got you covered.
+              Designed to help you work smarter, not harder. Whether you&apos;re
+              a solo creator or a large team, we&apos;ve got you covered.
             </p>
           </motion.div>
 

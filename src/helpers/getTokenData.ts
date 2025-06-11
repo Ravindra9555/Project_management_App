@@ -10,6 +10,7 @@ export const getTokenData = async (req: Request) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     return decoded as { id: string, email: string };
   } catch (err) {
+    console.log(err)
     return null;
   }
 };

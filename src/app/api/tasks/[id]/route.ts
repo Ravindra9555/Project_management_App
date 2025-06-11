@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import Task from "@/models/Task";
 import { dbConnect } from "@/app/config/dbConfig";
 
+interface progressLogs {
+  message: string;
+  status: string;
+  updatedAt: Date;
+}
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -18,7 +24,7 @@ export async function PATCH(
 
     // Handle progressLogs format if provided
     if (Array.isArray(updateData.progressLogs)) {
-      updateData.progressLogs = updateData?.progressLogs?.map((log: any) => ({
+      updateData.progressLogs = updateData?.progressLogs?.map((log: progressLogs) => ({
         message: log.message || "",
         status: log.status || "todo",
         updatedAt: log.updatedAt ? new Date(log.updatedAt) : new Date(),

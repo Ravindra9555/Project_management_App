@@ -5,10 +5,29 @@ import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { useAuthStore } from "@/app/store/authStore";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+
+interface CompanyData {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phone: string;
+  email: string;
+  website: string;
+}
+
+interface SubscriptionData {
+  userId?: string;
+  type: "free" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  companyData?: CompanyData;
+}
+
 export default function SubscriptionPage() {
   const { user } = useAuthStore();
 
@@ -19,7 +38,7 @@ export default function SubscriptionPage() {
     "free" | "pro" | "enterprise"
   >("free");
 
-  const [companyData, setCompanyData] = useState({
+  const [companyData, setCompanyData] = useState<CompanyData>({
     name: "",
     address: "",
     city: "",
@@ -36,11 +55,11 @@ export default function SubscriptionPage() {
       ...prev,
       [name]: value,
     }));
-    console.log(value)
+    console.log(value);
   };
 
   const handleSubmit = async () => {
-    const subscriptionData = {
+    const subscriptionData: SubscriptionData = {
       userId: user?.id,
       type: selectedPlan,
       accountType: userType,
@@ -52,14 +71,17 @@ export default function SubscriptionPage() {
       if (response.status === 200) {
         toast.success("Subscription successful");
       }
-
-      // Handle success
       console.log("Subscription successful");
-    } catch (err) {
-      const error = err as any;
-      toast.error(error?.response?.data?.message || "Login failed 👎");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Subscription failed");
+      } else {
+        toast.error("An unexpected error occurred");
+        console.error("Unexpected error:", error);
+      }
     }
   };
+
 
   return (
     <div className="relative min-h-screen w-full bg-neutral-950 pt-24 pb-12">
@@ -74,7 +96,7 @@ export default function SubscriptionPage() {
           <Tabs
             defaultValue="individual"
             className="w-[400px]"
-            onValueChange={(value: any) =>
+            onValueChange={(value: string) =>
               setUserType(value as "individual" | "organization")
             }
           >

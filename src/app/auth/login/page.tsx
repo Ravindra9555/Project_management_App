@@ -80,9 +80,13 @@ const LoginPage = () => {
           router.push("/dashboard");
         }
       }
-    } catch (err:object | any) {
-      // console.error(err);
-      toast.error(err?.response?.data?.message || "Login failed 👎");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "Login failed 👎");
+      } else {
+        toast.error("Login failed 👎");
+        console.error("Unexpected error:", err);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -190,7 +194,7 @@ const LoginPage = () => {
               </Button>
 
               <div className="text-center text-sm text-neutral-400 mt-4">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/signup"
                   className="text-emerald-500 hover:text-emerald-400 font-medium transition-colors"

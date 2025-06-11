@@ -2,16 +2,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface CompanyData {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  phone: string;
-  email: string;
-  website: string;
-}
+// interface CompanyData {
+//   name: string;
+//   address: string;
+//   city: string;
+//   state: string;
+//   zipCode: string;
+//   phone: string;
+//   email: string;
+//   website: string;
+// }
 
 interface User {
   id: string;

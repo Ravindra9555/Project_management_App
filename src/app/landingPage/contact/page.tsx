@@ -226,6 +226,7 @@ export default function ContactForm() {
       toast.success("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
+        console.log(error)
       toast.error("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);

@@ -1,6 +1,6 @@
 // models/Company.ts
 
-import mongoose, { Schema, model, models } from "mongoose";
+import  { Schema, model, models } from "mongoose";
 
 const CompanySchema = new Schema({
   name: { type: String, required: true },

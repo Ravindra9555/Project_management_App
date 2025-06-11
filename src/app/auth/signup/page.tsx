@@ -57,12 +57,16 @@ const SignupPage = () => {
           router.push("/auth/login");
         }, 2000);
       }
-    } catch (err: object |any) {
-      console.error(err);
-      toast.error(err?.response?.data?.message || "Error creating account");
-    } finally {
-      setIsLoading(false);
+    } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      toast.error(err.response?.data?.message || "Error creating account");
+    } else {
+      toast.error("Error creating account");
+      console.error("Unexpected error:", err);
     }
+  } finally {
+    setIsLoading(false);
+  }
   };
 
   return (

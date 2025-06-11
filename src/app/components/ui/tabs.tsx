@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@/app/lib/utils";
-import { motion } from "framer-motion";
 
 const Tabs = TabsPrimitive.Root;
 
