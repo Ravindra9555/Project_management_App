@@ -202,12 +202,12 @@ export default function LandingPage() {
                 Perfect for getting started
               </p>
               <div className="text-4xl font-bold text-white mb-6">
-                $0<span className="text-lg text-neutral-400">/month</span>
+                ₹0<span className="text-lg text-neutral-400">/month</span>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-neutral-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
-                  Up to 3 projects
+                  Up to 3 projects & 5 members
                 </li>
                 <li className="flex items-center text-neutral-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
@@ -241,12 +241,12 @@ export default function LandingPage() {
                 For professionals and small teams
               </p>
               <div className="text-4xl font-bold text-white mb-6">
-                $9.99<span className="text-lg text-neutral-400">/month</span>
+               ₹99.00<span className="text-lg text-neutral-400">/month</span>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-neutral-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
-                  Unlimited projects
+                  Up to 50 projects & 20 members
                 </li>
                 <li className="flex items-center text-neutral-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
