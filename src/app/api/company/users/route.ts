@@ -15,7 +15,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const users = await User.find({ companyId, role });
+     let users;
+    if (role == "all") {
+       users = await User.find({ companyId });
+    } else {
+      users = await User.find({ companyId, role });
+    }
 
     if (!users || users.length === 0) {
       return NextResponse.json({ message: "No users found" }, { status: 404 });

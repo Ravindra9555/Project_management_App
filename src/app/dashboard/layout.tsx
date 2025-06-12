@@ -31,8 +31,9 @@ export default function DashboardLayout({
       ),
     },
     {
-      label: "Profile",
-      href: "/dashboard/profile",
+      label: "Members",
+      href: "/dashboard/members",
+      
       icon: (
         <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
@@ -75,7 +76,7 @@ export default function DashboardLayout({
             <SidebarLink
               link={{
                 label: "Manu Arora",
-                href: "#",
+                href: "/dashboard/profile",
                 icon: (
                   <img
                     src="https://assets.aceternity.com/manu.png"

@@ -5,8 +5,8 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cva, type VariantProps } from "class-variance-authority";
 
-// --- UTILITY FUNCTION (You might already have this, if so, you can skip it) ---
-// This function merges Tailwind CSS classes without conflicts.
+import * as ProgressPrimitive from "@radix-ui/react-progress";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -52,26 +52,20 @@ const Separator = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & {
     orientation?: "horizontal" | "vertical";
   }
->(
-  (
-    { className, orientation = "horizontal", ...props },
-    ref
-  ) => (
-    <div
-      ref={ref}
-      role="separator"
-      aria-orientation={orientation}
-      className={cn(
-        "shrink-0 bg-neutral-800", // Using a dark-theme friendly color
-        orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
-        className
-      )}
-      {...props}
-    />
-  )
-);
+>(({ className, orientation = "horizontal", ...props }, ref) => (
+  <div
+    ref={ref}
+    role="separator"
+    aria-orientation={orientation}
+    className={cn(
+      "shrink-0 bg-neutral-800", // Using a dark-theme friendly color
+      orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+      className
+    )}
+    {...props}
+  />
+));
 Separator.displayName = "Separator";
-
 
 // --- SKELETON COMPONENT ---
 
@@ -90,5 +84,30 @@ function Skeleton({
   );
 }
 
+// ===================================
+// === PROGRESS COMPONENT ===
+// ===================================
+// This component requires an external library: `npm install @radix-ui/react-progress`
+
+const Progress = React.forwardRef<
+  React.ElementRef<typeof ProgressPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
+>(({ className, value, ...props }, ref) => (
+  <ProgressPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative h-2 w-full overflow-hidden rounded-full bg-neutral-800",
+      className
+    )}
+    {...props}
+  >
+    <ProgressPrimitive.Indicator
+      className="h-full w-full flex-1 bg-emerald-500 transition-all"
+      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+    />
+  </ProgressPrimitive.Root>
+));
+Progress.displayName = ProgressPrimitive.Root.displayName;
+
 // --- EXPORT ALL COMPONENTS ---
-export { Badge, Separator, Skeleton };
+export { Badge, Separator, Skeleton, Progress };
