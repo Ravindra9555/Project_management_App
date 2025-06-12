@@ -17,7 +17,7 @@ import {
 } from 'recharts';
 
 export function BarChart({ data, xAxisKey, yAxisKey }: { 
-  data: any[]; 
+  data: Array<Record<string, number | string>>; 
   xAxisKey: string; 
   yAxisKey: string 
 }) {
@@ -36,7 +36,7 @@ export function BarChart({ data, xAxisKey, yAxisKey }: {
 }
 
 export function LineChart({ data, xAxisKey, yAxisKey }: { 
-  data: any[]; 
+  data: Array<Record<string, number | string>>; 
   xAxisKey: string; 
   yAxisKey: string 
 }) {
@@ -76,7 +76,7 @@ export function PieChart({ data, colors }: {
           dataKey="value"
           label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
         >
-          {data.map((entry, index) => (
+          {data.map((_, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
@@ -116,7 +116,7 @@ export function DonutChart({ data, colors }: {
 }
 
 export function AreaChart({ data, xAxisKey, yAxisKey }: { 
-  data: any[]; 
+  data: Array<Record<string, number | string>>; 
   xAxisKey: string; 
   yAxisKey: string 
 }) {

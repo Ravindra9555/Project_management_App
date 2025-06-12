@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/app/components/ui/sidebar";
@@ -8,10 +7,10 @@ import {
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
-import { motion } from "motion/react";
 import { cn } from "@/app/lib/utils";
+import { Logo, LogoIcon } from "@/app/components/ui/logo"; // ✅ import from new file
 
-export default  function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -25,7 +24,6 @@ export default  function DashboardLayout({
       ),
     },
     {
-
       label: "Projects",
       href: "/dashboard/projects",
       icon: (
@@ -55,11 +53,12 @@ export default  function DashboardLayout({
     },
   ];
   const [open, setOpen] = useState(false);
+
   return (
     <div
       className={cn(
         "mx-auto flex w-full max-w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-950",
-        "h-dvh" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-dvh"
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -91,38 +90,9 @@ export default  function DashboardLayout({
           </div>
         </SidebarBody>
       </Sidebar>
-      {/* <Dashboard /> */}
       <main className="flex-1 overflow-auto p-6 md:p-6 bg-neutral-950 dark:bg-neutral-950">
-        {children} {/* This renders the current page */}
+        {children}
       </main>
-    </div> 
+    </div>
   );
 }
-
-export const Logo = () => {
-  return (
-    <a
-      href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-black dark:text-white"
-      >
-        ProjectFlow
-      </motion.span>
-    </a>
-  );
-};
-export const LogoIcon = () => {
-  return (
-    <a
-      href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-emerald-400 dark:bg-emerald-400" />
-    </a>
-  );
-};

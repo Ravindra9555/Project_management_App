@@ -88,10 +88,11 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(userObject, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[PROFILE_GET_ERROR]", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
+      { message: "Internal Server Error", error: errorMessage },
       { status: 500 }
     );
   }

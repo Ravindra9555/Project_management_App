@@ -4,7 +4,6 @@ import { CardBody, CardContainer, CardItem } from "@/app/components/ui/3d-card";
 import { Button } from "@/app/components/ui/button";
 import { motion } from "framer-motion";
 import { TypewriterEffect } from "@/app/components/ui/typewriter-effect";
-// import { WavyBackground } from "@/app/components/ui/wavy-background";
 import { InfiniteMovingCards } from "../components/ui/infinite-moving-cards";
 import { LampContainer } from "../components/ui/lamp";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";

@@ -229,7 +229,15 @@ export async function getResourceUtilization() {
 }
 
 // Helpers (same as before)
-function calculateGrowth(tasks: any[], status: string) {
+interface Task {
+  status: string;
+  priority?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  assignedTo?: { _id: string }[];
+}
+
+function calculateGrowth(tasks: Task[], status: string) {
   const current = tasks.filter(t => t.status === status).length;
   const previous = tasks.filter(t =>
     t.status === status &&
@@ -238,7 +246,7 @@ function calculateGrowth(tasks: any[], status: string) {
   return previous > 0 ? Math.round(((current - previous) / previous) * 100) : 0;
 }
 
-function calculateAvgCompletion(tasks: any[]) {
+function calculateAvgCompletion(tasks: Task[]) {
   const completed = tasks.filter(t => t.status === 'done');
   if (completed.length === 0) return 0;
 

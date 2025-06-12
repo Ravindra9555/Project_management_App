@@ -9,7 +9,6 @@ import {
 import {
   BarChart,
   LineChart,
-  PieChart,
   DonutChart,
   AreaChart,
 } from "@/app/components/charts";
@@ -17,8 +16,25 @@ import { getTasksAnalytics, getResourceUtilization } from "@/app/lib/analytics";
 import { useEffect, useState } from "react";
 
 export default function AnalyticsDashboard() {
-  const [taskData, setTaskData] = useState<any>(null);
-  const [resourceData, setResourceData] = useState<any>(null);
+  interface TaskData {
+    totalTasks: number;
+    completedTasks: number;
+    completionRate: number;
+    avgCompletionDays: number;
+    efficiencyChange: number;
+    statusDistribution: Array<{ name: string; value: number }>;
+    weeklyCompletion: Array<{ week: string; count: number }>;
+    priorityDistribution: Array<{ priority: string; count: number }>;
+  }
+
+  interface ResourceData {
+    utilization: number;
+    change: number;
+    weeklyUtilization: Array<{ week: string; percentage: number }>;
+  }
+
+  const [taskData, setTaskData] = useState<TaskData | null>(null);
+  const [resourceData, setResourceData] = useState<ResourceData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,9 +53,7 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* <h1 className="text-3xl font-bold">Project Analytics</h1> */}
-
-      {/* Overview Cards */}
+     
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Tasks"

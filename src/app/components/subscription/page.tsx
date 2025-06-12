@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { useAuthStore } from "@/app/store/authStore";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
+import Router from "next/router";
 interface CompanyData {
   name: string;
   address: string;
@@ -30,7 +30,7 @@ interface SubscriptionData {
 
 export default function SubscriptionPage() {
   const { user } = useAuthStore();
-
+ const router = Router;
   const [userType, setUserType] = useState<"individual" | "organization">(
     "individual"
   );
@@ -70,6 +70,7 @@ export default function SubscriptionPage() {
       const response = await axios.post("/api/plan/select", subscriptionData);
       if (response.status === 200) {
         toast.success("Subscription successful");
+        router.push("/dashboard");
       }
       console.log("Subscription successful");
     } catch (error: unknown) {

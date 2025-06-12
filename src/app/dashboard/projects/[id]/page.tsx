@@ -1,12 +1,13 @@
-export default function ProjectPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Project {params.id}</h1>
-      {/* Project details */}
-    </div>
-  );
-}
+ import React from 'react'
+ 
+ const ProjectPage = () => {
+    return (
+     <div className='flex flex-col justify-center items-center'>
+        <h1 className='text-3xl font-bold'>Projects</h1>
+     </div>
+
+   )
+ }
+ 
+ export default ProjectPage
+ 

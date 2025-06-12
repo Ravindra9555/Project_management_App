@@ -62,7 +62,6 @@ type CompanyData = {
 
 export default function ProfilePage() {
   const token = useAuthStore((state) => state.token);
-  const authUser = useAuthStore((state) => state.user);
 
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [companyData, setCompanyData] = useState<CompanyData | null>(null);
@@ -110,8 +109,12 @@ export default function ProfilePage() {
             console.error("Failed to fetch company details.");
           }
         }
-      } catch (err: any) {
-        setError(err.message || "An unknown error occurred.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
@@ -120,56 +123,6 @@ export default function ProfilePage() {
     fetchProfileData();
   }, [token]);
 
-//   useEffect(() => {
-//     if (!token) {
-//       setLoading(false);
-//       setError("Authentication token not found.");
-//       return;
-//     }
-
-//     const fetchProfileData = async () => {
-//       try {
-//         setLoading(true);
-//         // 1. Fetch User Profile
-//         const profileRes = await fetch("/api/profile", {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-
-//         if (!profileRes.ok) {
-//           throw new Error("Failed to fetch profile data.");
-//         }
-//         const userProfile: ProfileData = await profileRes.json();
-//         setProfileData(userProfile);
-
-//         // 2. If user is in a company, fetch company details
-//         if (userProfile.companyId) {
-//           // IMPORTANT: Replace with your actual API endpoint for company details
-//           const companyRes = await fetch(`/api/company/${userProfile.companyId}`, {
-//             headers: {
-//               Authorization: `Bearer ${token}`,
-//             },
-//           });
-//           if (!companyRes.ok) {
-//             // Don't block the page load, just log the error
-//             console.error("Failed to fetch company details.");
-//           } else {
-//             const companyDetails: CompanyData = await companyRes.json();
-//             setCompanyData(companyDetails);
-//           }
-//         }
-//       } catch (err: any) {
-//         setError(err.message || "An unknown error occurred.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProfileData();
-//   }, [token]);
-
-  // Handle Upgrade Button Click (you would navigate to a pricing/checkout page)
   const handleUpgrade = (plan: string) => {
     console.log(`Upgrading to ${plan} plan...`);
     // Example: router.push(`/pricing?plan=${plan}`);
