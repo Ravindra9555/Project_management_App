@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { useAuthStore } from "@/app/store/authStore";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
- import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 interface CompanyData {
   name: string;
   address: string;
@@ -30,7 +30,7 @@ interface SubscriptionData {
 
 export default function SubscriptionPage() {
   const { user } = useAuthStore();
- const router = useRouter();
+const router = useRouter();
   const [userType, setUserType] = useState<"individual" | "organization">(
     "individual"
   );
