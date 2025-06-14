@@ -43,8 +43,10 @@ const roleConfig: Record<MemberRole, { label: string; color: string; }> = {
 const ROLES: MemberRole[] = ["engineer", "worker", "client"];
 
 
+// In: app/dashboard/members/page.tsx
+
 // ===================================
-// === MEMBER FORM DIALOG COMPONENT ===
+// === MEMBER FORM DIALOG COMPONENT (FINAL FIX) ===
 // ===================================
 function MemberFormDialog({ mode, open, onOpenChange, initialData, onActionSuccess }: {
   mode: "add" | "edit";
@@ -53,7 +55,8 @@ function MemberFormDialog({ mode, open, onOpenChange, initialData, onActionSucce
   initialData?: Member | null;
   onActionSuccess: (member: Member) => void;
 }) {
-  const { token, user: authUser } = useAuthStore();
+  // ... existing state and handlers ...
+ const { token, user: authUser } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", password: "", role: "engineer" as MemberRole, isActive: true });
 
@@ -76,7 +79,6 @@ function MemberFormDialog({ mode, open, onOpenChange, initialData, onActionSucce
         response = await axios.post('/api/company/users/register', { ...formData, companyId: authUser.companyId }, { headers: { Authorization: `Bearer ${token}` } });
         toast.success("Member added successfully!");
       } else if (mode === 'edit' && initialData) {
-        // Exclude empty password field unless it's filled
         const payload = { ...formData, userId: initialData._id, password: formData.password || undefined };
         response = await axios.put('/api/company/users/update', payload, { headers: { Authorization: `Bearer ${token}` } });
         toast.success("Member updated successfully!");
@@ -88,7 +90,7 @@ function MemberFormDialog({ mode, open, onOpenChange, initialData, onActionSucce
     } catch (error: unknown) {
       console.error(`Failed to ${mode} member:`, error);
       if (error && typeof error === "object" && "response" in error && error.response && typeof error.response === "object" && "data" in error.response && error.response.data && typeof error.response.data === "object" && "message" in error.response.data) {
-        // @ts-expect-error: dynamic error shape from axios
+        // @ts-expect-error: TypeScript can't know the shape here
         toast.error(error.response.data.message || `Could not ${mode} member.`);
       } else {
         toast.error(`Could not ${mode} member.`);
@@ -97,28 +99,80 @@ function MemberFormDialog({ mode, open, onOpenChange, initialData, onActionSucce
       setIsSubmitting(false);
     }
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-neutral-900 border-neutral-800 text-neutral-100">
-        <DialogHeader><DialogTitle>{mode === 'add' ? 'Add New Member' : 'Edit Member'}</DialogTitle><DialogDescription>{mode === 'add' ? 'Invite a new person to your company.' : `Update details for ${initialData?.name}.`}</DialogDescription></DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2"><Label htmlFor="name">Full Name</Label><Input id="name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required /></div>
-            <div className="space-y-2"><Label htmlFor="email">Email</Label><Input id="email" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required disabled={mode === 'edit'} /></div>
+      {/* 
+        Key changes:
+        1. Removed p-0 from DialogContent to ensure proper padding
+        2. Added responsive max-width and width
+        3. Simplified the inner layout
+      */}
+      <DialogContent className="bg-neutral-900 border-neutral-800 text-neutral-100 sm:max-w-[625px] w-[calc(100%-2rem)]">
+        <DialogHeader className="text-left">
+          <DialogTitle>{mode === 'add' ? 'Add New Member' : 'Edit Member'}</DialogTitle>
+          <DialogDescription>
+            {mode === 'add' ? 'Invite a new person to your company.' : `Update details for ${initialData?.name}.`}
+          </DialogDescription>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit}>
+          {/* 
+            Key changes:
+            1. Removed fixed max-height and overflow
+            2. Added responsive padding
+          */}
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input id="name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required disabled={mode === 'edit'} />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder={mode === 'edit' ? 'Leave blank to keep unchanged' : 'Required'} required={mode === 'add'} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="role">Role</Label>
+                <Select value={formData.role} onValueChange={(v) => setFormData({ ...formData, role: v as MemberRole })}>
+                  <SelectTrigger>
+                    <SelectValue/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROLES.map(r => <SelectItem key={r} value={r} className="capitalize">{r}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              {mode === 'edit' && (
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <div className="flex items-center gap-2 pt-2">
+                    <Switch id="status" checked={formData.isActive} onCheckedChange={c => setFormData({ ...formData, isActive: c })} />
+                    <span className="text-sm">{formData.isActive ? "Active" : "Inactive"}</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="space-y-2"><Label htmlFor="password">Password</Label><Input id="password" type="password" placeholder={mode === 'edit' ? 'Leave blank to keep unchanged' : 'Required'} required={mode === 'add'} onChange={e => setFormData({ ...formData, password: e.target.value })} /></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2"><Label htmlFor="role">Role</Label><Select value={formData.role} onValueChange={(v) => setFormData({ ...formData, role: v as MemberRole })}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent>{ROLES.map(r => <SelectItem key={r} value={r} className="capitalize">{r}</SelectItem>)}</SelectContent></Select></div>
-            {mode === 'edit' && <div className="space-y-2"><Label htmlFor="status">Status</Label><div className="flex items-center gap-2 pt-2"><Switch id="status" checked={formData.isActive} onCheckedChange={c => setFormData({ ...formData, isActive: c })} /><span className="text-sm">{formData.isActive ? "Active" : "Inactive"}</span></div></div>}
+        
+          <div className="flex justify-end gap-4 pt-4 border-t border-neutral-800">
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isSubmitting}>
+              {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Saving...</> : "Save Changes"}
+            </Button>
           </div>
-          <div className="flex justify-end gap-4 pt-4"><Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button><Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isSubmitting}>{isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Saving...</> : "Save Changes"}</Button></div>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
-
 // ===================================
 // === MAIN MEMBERS PAGE COMPONENT ===
 // ===================================

@@ -23,7 +23,6 @@ export const DialogOverlay = React.forwardRef<
   />
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
-
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -33,7 +32,13 @@ export const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 grid w-full max-w-lg gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-6 shadow-lg duration-200 sm:top-1/2 sm:left-1/2 sm:translate-x-[-50%] sm:translate-y-[-50%]",
+        "fixed z-50 grid w-full max-w-lg gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-6 shadow-lg duration-200",
+        // Mobile positioning (fills most of screen with margin)
+        "top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]",
+        // Responsive sizing
+        "w-[calc(100%-2rem)] max-w-[95vw] sm:w-full sm:max-w-lg",
+        // Ensure it doesn't get too tall
+        "max-h-[90vh] overflow-y-auto",
         className
       )}
       {...props}
@@ -45,6 +50,7 @@ export const DialogContent = React.forwardRef<
     </DialogPrimitive.Content>
   </DialogPortal>
 ))
+
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 export const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
