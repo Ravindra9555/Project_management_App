@@ -2,17 +2,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// interface CompanyData {
-//   name: string;
-//   address: string;
-//   city: string;
-//   state: string;
-//   zipCode: string;
-//   phone: string;
-//   email: string;
-//   website: string;
-// }
-
 interface User {
   id: string;
   name: string;
@@ -39,10 +28,23 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       setUser: (user) => set({ user }),
       setToken: (token) => set({ token }),
-      logout: () => set({ user: null, token: null }),
+      logout: () => {
+        // Call your custom logout function here
+        console.log("Logging out...");
+        customLogoutFunction();
+        set({ user: null, token: null });
+      },
     }),
     {
       name: "auth-storage", // localStorage key
     }
   )
 );
+
+// Define your custom logout function
+function customLogoutFunction() {
+  
+  window.location.href = "/"; // Redirect to home page or login page
+  // Add your logout logic here, e.g., API call, redirect, etc.
+  console.log("Logged out!");
+}

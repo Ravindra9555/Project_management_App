@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/app/components/ui/sidebar";
 import {
   IconArrowLeft,
@@ -11,12 +11,17 @@ import {
 } from "@tabler/icons-react";
 import { cn } from "@/app/lib/utils";
 import { Logo, LogoIcon } from "@/app/components/ui/logo"; 
-
+import { useAuthStore } from "../store/authStore";
+import { Button } from "../components/ui/button";
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+   
+  const { user , logout} = useAuthStore();
+
+
   const links = [
     {
       label: "Dashboard",
@@ -32,24 +37,31 @@ export default function DashboardLayout({
         <IconBrandCodesandbox className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
-    {
-      label: "Members",
-      href: "/dashboard/members",
-      
-      icon: (
-        <IconUsers className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Settings",
-      href: "/dashboard/setting/company",
-      icon: (
-        <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
+    // Only show Members and Settings if user.userTpe is not 'individual'
+    ...(user?.accountType !== "individual"
+      ? [
+          {
+            label: "Members",
+            href: "/dashboard/members",
+            icon: (
+              <IconUsers className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+            ),
+          },
+          {
+            label: "Settings",
+            href: "/dashboard/setting/company",
+            icon: (
+              <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+            ),
+          },
+        ]
+      : []),
     {
       label: "Logout",
       href: "/",
+      onClick: () => {
+        logout();
+      },
       icon: (
         <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
@@ -75,6 +87,13 @@ export default function DashboardLayout({
             </div>
           </div>
           <div>
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-neutral-700 dark:text-neutral-200"
+              onClick={() => {
+                logout();
+              }}
+            > Logout</Button>    
             <SidebarLink
               link={{
                 label: "Manu Arora",
