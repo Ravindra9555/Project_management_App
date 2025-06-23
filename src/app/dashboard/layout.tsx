@@ -12,7 +12,7 @@ import {
 import { cn } from "@/app/lib/utils";
 import { Logo, LogoIcon } from "@/app/components/ui/logo"; 
 import { useAuthStore } from "../store/authStore";
-import { Button } from "../components/ui/button";
+// import { Button } from "../components/ui/button";
 export default function DashboardLayout({
   children,
 }: {
@@ -87,20 +87,21 @@ export default function DashboardLayout({
             </div>
           </div>
           <div>
-            <Button
+            {/* <Button
               variant="ghost"
               className="w-full justify-start text-neutral-700 dark:text-neutral-200"
               onClick={() => {
                 logout();
               }}
-            > Logout</Button>    
+            > Logout</Button>     */}
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: user?.email || "Profile",
                 href: "/dashboard/profile",
                 icon: (
                   <img
-                    src="https://assets.aceternity.com/manu.png"
+                    // src="https://assets.aceternity.com/manu.png"
+
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}
                     height={50}
